@@ -1,22 +1,45 @@
+# Dependencies
+node_modules/
 __pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-build/
-dist/
-*.egg-info/
+*.pyc
 .venv/
 venv/
-env/
+
+# Build outputs
+.next/
+out/
+dist/
+build/
+*.egg-info/
+
+# Environment
 .env
-.pytest_cache/
-.mypy_cache/
-.ruff_cache/
-.coverage
-htmlcov/
-.DS_Store
+.env.local
+.env.*.local
+
+# IDE
 .idea/
 .vscode/
-neo4j-data/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
 *.log
+npm-debug.log*
+
+# Neo4j data (if running locally outside Docker)
+neo4j_data/
+neo4j_logs/
+
+# Test coverage
+coverage/
+.coverage
+htmlcov/
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts

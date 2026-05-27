@@ -1,139 +1,367 @@
-# GraphRAG Decision Trace
+# Context Graph Demo
 
-> **Explainable AI for financial decisions** — combine a Neo4j knowledge graph with an LLM to produce auditable, evidence-grounded explanations of loan approvals and denials.
+A demonstration project showing how to build and use **Context Graphs** with Neo4j for AI-powered decision tracing in financial institutions.
 
-[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/)
-[![Neo4j 5](https://img.shields.io/badge/neo4j-5-008CC1?logo=neo4j&logoColor=white)](https://neo4j.com/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+![Architecture Diagram](img/arch_diagram.png)
 
----
+## What is a Context Graph?
 
-## Why this exists
+Context Graphs are the infrastructure layer that enables AI agents to make enterprise-grade decisions. They capture **decision traces** - the tribal knowledge, exception logic, and reasoning that traditionally lives only in human experts' heads.
 
-Financial institutions cannot ship pure-LLM decisioning into production — regulators (CFPB, ECOA, GDPR Article 22) require **auditable reasoning** behind every adverse action. A vanilla LLM "I think this loan should be denied because the applicant looks risky" is unshippable.
+Key concepts:
+- **State Clock**: What is true now (traditional databases)
+- **Event Clock**: What happened, when, and why (context graphs)
+- **Decision Traces**: Full reasoning, risk factors, confidence scores, and causal relationships
 
-**GraphRAG** fixes this. We:
 
-1. Store decisions, applicants, features, policies, and similar past cases as a **knowledge graph** in Neo4j.
-2. When asked *"why was application LOAN-1042 denied?"*, traverse the graph to retrieve only the evidence connected to that decision — features that triggered, policies that applied, similar past cases that were precedent.
-3. Pass that **bounded, cited context** to an LLM, which writes a natural-language explanation grounded in the retrieved subgraph.
+## AI-powered Decision Tracing For Financial Institutions
 
-The result: an explanation that's both human-readable *and* traceable back to specific graph nodes — every claim has a citation.
+![Graph Data Model](img/graph_data_model.png)
 
----
+### AI Assistant
+
+Ask questions about customers, decisions, and policies.
+
+
+### Context Graph
+
+Visualize entities, decisions, and causal relationships.
+
+
+### Decision Trace
+
+Inspect reasoning, precedents, and causal chains.
+
+
+## Demo Scenarios
+
+![Trading Limit Override Toolcall](img/trading_limit_override_toolcall.png)
+
+### Scenario 1: Credit Decision with Precedent Lookup
+
+```
+User: "Should we approve a $50K credit line increase for John Smith?"
+
+Agent:
+1. Searches customer profile
+2. Finds similar past decisions via FastRP embeddings
+3. Cites relevant precedents
+4. Makes recommendation with confidence score
+5. Records decision trace with full reasoning
+```
+
+### Scenario 2: Fraud Pattern Detection
+
+```
+User: "Analyze account #12345 for fraud patterns"
+
+Agent:
+1. Uses FastRP embeddings to compare with known fraud typologies
+2. Applies Node Similarity to find structural matches
+3. Visualizes suspicious patterns in graph
+4. Returns risk score with explanation
+```
+
+### Scenario 3: Exception Request with Audit Trail
+
+```
+User: "We need to override the trading limit for XYZ Corp"
+
+Agent:
+1. Finds past exceptions and their outcomes
+2. Traces causal chain of similar exceptions
+3. Records exception with justification and precedent links
+4. Links to applicable policies
+```
+
+## Key Features
+
+![Trading Limit Override Toolcard](img/trading_limit_override_toolcard.png)
+
+This demo showcases three key differentiators of Neo4j for context graphs:
+
+### 1. Data Model Fit
+Neo4j is the natural substrate for context graphs - entities, decisions, and causal relationships map directly to nodes and relationships.
+
+### 2. Graph Data Science Algorithms
+Graph Data Science algorithms provide **structural/topological similarity** that's impossible on Postgres without a PhD in graph theory:
+- **FastRP**: 75,000x faster than node2vec, captures structural embeddings
+- **KNN**: Find k-nearest neighbors based on graph structure
+- **Node Similarity**: Compare neighborhood patterns (fraud detection)
+- **Louvain**: Community detection for decision clusters
+- **PageRank**: Influence scoring for decision impact
+
+### 3. Vector Embeddings + Graph
+Combine semantic similarity (text embeddings) with structural similarity (FastRP) for hybrid search that understands both meaning and context.
 
 ## Architecture
 
-```mermaid
-flowchart LR
-    A[User query<br/>'Why was LOAN-1042 denied?'] --> B[Graph Retriever<br/>Cypher traversal]
-    B --> C[(Neo4j<br/>Knowledge Graph)]
-    C --> B
-    B --> D[Evidence subgraph<br/>features + policies + precedents]
-    D --> E[LLM Prompt Builder]
-    E --> F[OpenAI<br/>GPT-4o-mini]
-    F --> G[Explanation<br/>+ citations]
+```
+┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
+│   Next.js UI    │────▶│  FastAPI + SDK  │────▶│  Neo4j + GDS    │
+│  Chakra UI v3   │     │  Claude Agent   │     │  Vector Search  │
+│  NVL Graphs     │     │  10 MCP Tools   │     │  FastRP/KNN     │
+└─────────────────┘     └─────────────────┘     └─────────────────┘
 ```
 
-**Graph schema**
+## Prerequisites
 
-```
-(:Applicant)-[:SUBMITTED]->(:LoanApplication)-[:HAS_FEATURE]->(:Feature)
-(:LoanApplication)-[:RECEIVED]->(:Decision)
-(:Decision)-[:APPLIED]->(:Policy)
-(:LoanApplication)-[:SIMILAR_TO {score}]->(:LoanApplication)
-```
+- Python 3.11+ with [uv](https://docs.astral.sh/uv/) package manager
+- Node.js 18+
+- Neo4j AuraDS instance (or local Neo4j Enterprise with GDS plugin)
+- Anthropic API Key
+- OpenAI API Key (for embeddings)
 
----
+## Quick Start
 
-## Quick start
-
-**Prereqs**: Docker, Python 3.11+, an OpenAI API key.
+### 1. Clone and Setup Environment
 
 ```bash
-# 1. Set up env
-cp .env.example .env
-# edit .env, paste your OPENAI_API_KEY
+cd context-graph
 
-# 2. Start Neo4j, install deps, seed the graph
-make setup
-make seed
+# Create environment file
+cat > .env << 'EOF'
+# Neo4j Connection
+NEO4J_URI=neo4j+s://xxxx.databases.neo4j.io
+NEO4J_USERNAME=neo4j
+NEO4J_PASSWORD=your_neo4j_password
 
-# 3. Trace a decision from the CLI
-make trace LOAN=LOAN-1042
+# Anthropic API Key (for Claude Agent SDK)
+ANTHROPIC_API_KEY=your_anthropic_key
 
-# 4. Or run the API and hit it from the browser
-make api
-# -> open http://localhost:8000
+# OpenAI API Key (for text embeddings)
+OPENAI_API_KEY=your_openai_key
+EOF
 ```
 
----
+### 2. Install Backend Dependencies
 
-## Example output
+```bash
+cd backend
 
-```text
-$ make trace LOAN=LOAN-1042
-
-Decision: DENIED
-Decided: 2025-08-14
-
-Why:
-This application was denied because two policies were triggered:
-
-  1. POL-DTI-MAX (Debt-to-income ratio above 0.43)
-     - Applicant DTI: 0.51  [cited from Feature node f_LOAN-1042_dti]
-  2. POL-FICO-MIN (FICO score below 620 for unsecured loans)
-     - Applicant FICO: 588  [cited from Feature node f_LOAN-1042_fico]
-
-Precedent: 3 similar past applications (by feature similarity > 0.85)
-were also denied, suggesting consistent application of policy:
-  - LOAN-0117 (denied, similarity 0.91)
-  - LOAN-0843 (denied, similarity 0.88)
-  - LOAN-0921 (denied, similarity 0.86)
-
-All cited evidence is retrievable from the graph for audit.
+# Create virtual environment and install dependencies with uv
+uv venv
+uv pip install -e .
 ```
 
----
+### 3. Generate Sample Data
 
-## Project layout
-
-```
-graphrag_trace/
-  graph.py        Neo4j connection + schema bootstrapping
-  seed.py         Load sample data into the graph
-  retriever.py    Cypher queries that pull the evidence subgraph
-  llm.py          OpenAI prompt construction + invocation
-  tracer.py       Orchestrates retrieve -> prompt -> explain
-  api.py          FastAPI service + minimal HTML UI
-  cli.py          `python -m graphrag_trace trace <LOAN_ID>`
-data/
-  loans.json      40 synthetic loan applications + features + decisions
-  policies.json   8 lending policies (DTI cap, FICO floor, etc.)
-tests/
-  test_smoke.py   End-to-end smoke test against a live Neo4j
+```bash
+cd backend
+source .venv/bin/activate
+export $(grep -v '^#' ../.env | xargs)
+python scripts/generate_sample_data.py
 ```
 
----
+This creates:
+- 200 persons
+- 350 accounts  
+- 2000 transactions
+- 600 decisions with causal chains
+- 50 organizations
+- 30 employees
+- 15 policies
 
-## What this is and isn't
+### 4. Start Backend
 
-**Is**: a small, focused, end-to-end working demo of the GraphRAG pattern applied to a regulated domain. Designed to be readable in one sitting and runnable in five minutes.
+```bash
+cd backend
+source .venv/bin/activate
+export $(grep -v '^#' ../.env | xargs)
+uvicorn app.main:app --port 8000
+```
 
-**Isn't**: a production system. The dataset is synthetic, the LLM prompt is deliberately minimal, and the similarity edges are precomputed rather than embedding-based. Each of those is a clear next step rather than a pretended capability.
+Backend runs at http://localhost:8000
 
----
+### 5. Start Frontend
 
-## Roadmap (honest)
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
-- [ ] Embedding-based similarity edges (replace the precomputed `SIMILAR_TO`)
-- [ ] Stream LLM tokens to the UI
-- [ ] Swap GPT-4o-mini for an open model via vLLM for fully on-prem deployment
-- [ ] Add an evaluation harness that checks the explanation cites only retrieved evidence
+Frontend runs at http://localhost:3000
 
----
+## Deploying in multihomed environments
+
+When deploying to a multihomed environment, such as a cloud virtual machine, you will need to make a couple of changes. Open the file backend/app/main.py in your favorite text editor and locate the following code:
+
+```
+# CORS middleware for frontend
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "http://localhost:3001",
+        "http://127.0.0.1:3001",
+        "https://context-graph-demo.vercel.app",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+```
+
+Change the URL "https://context-graph-demo.vercel.app" to reflect the public IP and port (3000) you use to access the frontend. If your backend is running, stop and restart it to pick up the change.
+
+The second thing you will need to do is to set an environment variable before starting the frontend. You should set the variable NEXT_PUBLIC_API_URL to the public URL (including host and port) for the backend:
+
+```
+export NEXT_PUBLIC_API_URL="http://<public ip>:8000"
+```
+
+## Using Neo4j AuraDS (Recommended)
+
+For the best experience with GDS algorithms:
+
+1. Create an AuraDS instance at https://console.neo4j.io
+2. Note the connection URI (format: `neo4j+s://xxxx.databases.neo4j.io`)
+3. Update your `.env` with the connection details
+
+AuraDS includes all GDS algorithms (FastRP, KNN, Node Similarity, Louvain, PageRank) without additional configuration.
+
+## Using Local Neo4j with Docker
+
+If you have a Neo4j Enterprise license:
+
+```bash
+docker-compose up -d
+```
+
+Wait for Neo4j to be ready at http://localhost:7474, then update `.env`:
+
+```bash
+NEO4J_URI=bolt://localhost:7687
+NEO4J_USERNAME=neo4j
+NEO4J_PASSWORD=password
+```
+
+
+## API Endpoints
+
+| Endpoint | Description |
+|----------|-------------|
+| `GET /health` | Health check |
+| `POST /api/chat` | Chat with AI agent |
+| `POST /api/chat/stream` | Streaming chat with SSE |
+| `GET /api/customers/search?query=` | Search customers |
+| `GET /api/customers/{id}` | Get customer details |
+| `GET /api/customers/{id}/decisions` | Get customer decisions |
+| `GET /api/decisions` | List decisions |
+| `GET /api/decisions/{id}` | Get decision details |
+| `POST /api/decisions` | Create new decision |
+| `GET /api/decisions/{id}/similar` | Find similar decisions |
+| `GET /api/decisions/{id}/causal-chain` | Get causal chain |
+| `GET /api/graph` | Get graph visualization data |
+| `GET /api/graph/expand/{node_id}` | Expand node connections |
+| `POST /api/graph/relationships` | Get relationships between nodes |
+| `GET /api/graph/schema` | Get graph schema |
+| `GET /api/graph/statistics` | Get graph statistics |
+| `GET /api/policies` | List policies |
+| `GET /api/policies/{id}` | Get policy details |
+
+## Project Structure
+
+```
+context-graph/
+├── backend/
+│   ├── app/
+│   │   ├── main.py              # FastAPI application
+│   │   ├── agent.py             # Claude Agent SDK with MCP tools
+│   │   ├── context_graph_client.py  # Neo4j operations
+│   │   ├── gds_client.py        # GDS algorithms
+│   │   ├── vector_client.py     # Vector search
+│   │   └── models/              # Pydantic models
+│   └── scripts/
+│       └── generate_sample_data.py
+├── frontend/
+│   ├── app/                     # Next.js pages
+│   ├── components/
+│   │   ├── ChatInterface.tsx    # AI chat with inline graphs
+│   │   ├── ContextGraphView.tsx # NVL visualization
+│   │   └── DecisionTracePanel.tsx
+│   └── lib/
+│       └── api.ts               # API client
+├── cypher/
+│   ├── schema.cypher            # Neo4j schema
+│   └── gds_projections.cypher   # GDS algorithms
+├── docker-compose.yml           # Local Neo4j setup
+└── .env                         # Environment variables
+```
+
+## Agent Tools (MCP)
+
+The Claude Agent has access to 10 custom tools:
+
+| Tool | Description |
+|------|-------------|
+| `search_customer` | Search customers by name, email, account number |
+| `get_customer_decisions` | Get all decisions about a customer |
+| `find_similar_decisions` | FastRP-based structural similarity search |
+| `find_precedents` | Semantic + structural precedent search |
+| `get_causal_chain` | Trace causes and effects of a decision |
+| `record_decision` | Create new decision trace with reasoning |
+| `detect_fraud_patterns` | Graph-based fraud analysis |
+| `get_policy` | Get current policy rules |
+| `execute_cypher` | Read-only Cypher for custom analysis |
+| `get_schema` | Retrieve the current Neo4j schema |
+
+## Neo4j Data Model
+
+### Core Entities
+- `Person` - Customer/employee with FastRP embedding
+- `Account` - Bank/trading accounts with risk tiers
+- `Transaction` - Financial transactions with fraud scores
+- `Organization` - Companies with sanctions status
+
+### Decision Trace Nodes
+- `Decision` - Core decision with reasoning, confidence
+- `DecisionContext` - State snapshot at decision time
+- `Precedent` - Links to similar past decisions
+- `Policy` - Rules governing decisions
+- `Exception` - Documented exceptions
+
+### Key Relationships
+```
+(:Decision)-[:CAUSED]->(:Decision)
+(:Decision)-[:INFLUENCED]->(:Decision)
+(:Decision)-[:PRECEDENT_FOR]->(:Decision)
+(:Decision)-[:ABOUT]->(:Person|:Account|:Transaction)
+(:Decision)-[:APPLIED_POLICY]->(:Policy)
+(:Decision)-[:GRANTED_EXCEPTION]->(:Exception)
+```
+
+## GDS Algorithms
+
+### FastRP Embeddings
+```cypher
+CALL gds.fastRP.mutate('decision-graph', {
+  embeddingDimension: 128,
+  iterationWeights: [0.0, 1.0, 1.0, 0.8, 0.6],
+  mutateProperty: 'fastrp_embedding'
+})
+```
+
+### Hybrid Search (Semantic + Structural)
+```cypher
+// Find decisions similar in both meaning and graph structure
+CALL db.index.vector.queryNodes('decision_semantic_idx', 10, $query_embedding)
+YIELD node, score AS semantic_score
+WITH node, semantic_score
+CALL db.index.vector.queryNodes('decision_fastrp_idx', 10, node.fastrp_embedding)
+YIELD node AS similar, score AS structural_score
+RETURN similar, (semantic_score + structural_score) / 2 AS combined_score
+ORDER BY combined_score DESC
+```
+
+## References
+
+- [AI's Trillion-Dollar Opportunity: Context Graphs](https://foundationcapital.com/context-graphs-ais-trillion-dollar-opportunity/) - Foundation Capital
+- [Claude Agent SDK](https://github.com/anthropics/claude-agent-sdk-python)
+- [NVL Visualization Library](https://neo4j.com/docs/nvl/)
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT
