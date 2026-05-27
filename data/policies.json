@@ -1,0 +1,66 @@
+[
+  {
+    "id": "POL-DTI-MAX",
+    "name": "Debt-to-income ceiling",
+    "description": "Debt-to-income ratio must not exceed 0.43 for any unsecured loan.",
+    "rule": "features.dti > 0.43",
+    "outcome_on_trigger": "DENY",
+    "regulatory_basis": "CFPB Qualified Mortgage rule (43% DTI cap, applied here to all unsecured)"
+  },
+  {
+    "id": "POL-FICO-MIN",
+    "name": "Minimum FICO for unsecured",
+    "description": "FICO score must be at least 620 for any unsecured loan.",
+    "rule": "features.fico < 620 AND features.purpose != 'auto'",
+    "outcome_on_trigger": "DENY",
+    "regulatory_basis": "Internal credit-risk policy CR-2024-03"
+  },
+  {
+    "id": "POL-AUTO-FICO-MIN",
+    "name": "Minimum FICO for auto",
+    "description": "FICO score must be at least 580 for secured auto loans.",
+    "rule": "features.fico < 580 AND features.purpose == 'auto'",
+    "outcome_on_trigger": "DENY",
+    "regulatory_basis": "Internal credit-risk policy CR-2024-03"
+  },
+  {
+    "id": "POL-INCOME-MIN",
+    "name": "Minimum verified annual income",
+    "description": "Verified annual income must be at least $30,000.",
+    "rule": "features.income_annual < 30000",
+    "outcome_on_trigger": "DENY",
+    "regulatory_basis": "Internal underwriting standard UW-2023-11"
+  },
+  {
+    "id": "POL-EMP-MIN",
+    "name": "Minimum employment tenure",
+    "description": "Applicant must have at least 1 year of continuous employment.",
+    "rule": "features.employment_years < 1",
+    "outcome_on_trigger": "DENY",
+    "regulatory_basis": "Internal underwriting standard UW-2023-11"
+  },
+  {
+    "id": "POL-AMOUNT-CAP",
+    "name": "Unsecured amount cap",
+    "description": "Unsecured loans above $100,000 require manual senior-underwriter review (treated as deny in this demo).",
+    "rule": "features.loan_amount > 100000 AND features.purpose != 'auto' AND features.purpose != 'mortgage'",
+    "outcome_on_trigger": "DENY",
+    "regulatory_basis": "Internal risk policy RP-2024-01"
+  },
+  {
+    "id": "POL-MORTGAGE-DTI-MAX",
+    "name": "Mortgage DTI ceiling",
+    "description": "Debt-to-income ratio must not exceed 0.36 for mortgage products.",
+    "rule": "features.dti > 0.36 AND features.purpose == 'mortgage'",
+    "outcome_on_trigger": "DENY",
+    "regulatory_basis": "CFPB Ability-to-Repay rule"
+  },
+  {
+    "id": "POL-RECENT-DEFAULT",
+    "name": "Recent default exclusion",
+    "description": "Applicants with a default in the last 24 months are ineligible.",
+    "rule": "features.recent_default == true",
+    "outcome_on_trigger": "DENY",
+    "regulatory_basis": "Internal credit-risk policy CR-2024-03"
+  }
+]

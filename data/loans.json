@@ -1,0 +1,177 @@
+[
+  {
+    "id": "LOAN-1001",
+    "applicant": {"id": "APP-1001", "name": "Jane Whitman", "age": 34},
+    "features": {"fico": 742, "dti": 0.28, "income_annual": 92000, "loan_amount": 22000, "loan_term_months": 60, "employment_years": 8, "purpose": "auto", "recent_default": false},
+    "decision": {"outcome": "APPROVED", "decided_at": "2025-02-04", "applied_policies": []},
+    "similar_to": [{"id": "LOAN-1015", "score": 0.87}, {"id": "LOAN-1029", "score": 0.82}]
+  },
+  {
+    "id": "LOAN-1003",
+    "applicant": {"id": "APP-1003", "name": "Marcus Lee", "age": 41},
+    "features": {"fico": 688, "dti": 0.35, "income_annual": 71000, "loan_amount": 15000, "loan_term_months": 36, "employment_years": 5, "purpose": "personal", "recent_default": false},
+    "decision": {"outcome": "APPROVED", "decided_at": "2025-02-09", "applied_policies": []},
+    "similar_to": [{"id": "LOAN-1020", "score": 0.83}]
+  },
+  {
+    "id": "LOAN-0117",
+    "applicant": {"id": "APP-0117", "name": "Renee Cabrera", "age": 29},
+    "features": {"fico": 592, "dti": 0.49, "income_annual": 41000, "loan_amount": 18000, "loan_term_months": 48, "employment_years": 2, "purpose": "personal", "recent_default": false},
+    "decision": {"outcome": "DENIED", "decided_at": "2025-01-22", "applied_policies": ["POL-DTI-MAX", "POL-FICO-MIN"]},
+    "similar_to": [{"id": "LOAN-1042", "score": 0.91}, {"id": "LOAN-0843", "score": 0.84}]
+  },
+  {
+    "id": "LOAN-0843",
+    "applicant": {"id": "APP-0843", "name": "Trevor Ng", "age": 37},
+    "features": {"fico": 601, "dti": 0.47, "income_annual": 45000, "loan_amount": 21000, "loan_term_months": 60, "employment_years": 3, "purpose": "personal", "recent_default": false},
+    "decision": {"outcome": "DENIED", "decided_at": "2025-04-11", "applied_policies": ["POL-DTI-MAX", "POL-FICO-MIN"]},
+    "similar_to": [{"id": "LOAN-1042", "score": 0.88}, {"id": "LOAN-0117", "score": 0.84}]
+  },
+  {
+    "id": "LOAN-0921",
+    "applicant": {"id": "APP-0921", "name": "Priya Anand", "age": 32},
+    "features": {"fico": 608, "dti": 0.45, "income_annual": 48000, "loan_amount": 19000, "loan_term_months": 48, "employment_years": 2, "purpose": "personal", "recent_default": false},
+    "decision": {"outcome": "DENIED", "decided_at": "2025-05-03", "applied_policies": ["POL-DTI-MAX", "POL-FICO-MIN"]},
+    "similar_to": [{"id": "LOAN-1042", "score": 0.86}]
+  },
+  {
+    "id": "LOAN-1042",
+    "applicant": {"id": "APP-1042", "name": "Cole Bennett", "age": 31},
+    "features": {"fico": 588, "dti": 0.51, "income_annual": 44000, "loan_amount": 20000, "loan_term_months": 60, "employment_years": 2, "purpose": "personal", "recent_default": false},
+    "decision": {"outcome": "DENIED", "decided_at": "2025-08-14", "applied_policies": ["POL-DTI-MAX", "POL-FICO-MIN"]},
+    "similar_to": [{"id": "LOAN-0117", "score": 0.91}, {"id": "LOAN-0843", "score": 0.88}, {"id": "LOAN-0921", "score": 0.86}]
+  },
+  {
+    "id": "LOAN-1015",
+    "applicant": {"id": "APP-1015", "name": "Sara Okafor", "age": 39},
+    "features": {"fico": 755, "dti": 0.24, "income_annual": 110000, "loan_amount": 28000, "loan_term_months": 60, "employment_years": 12, "purpose": "auto", "recent_default": false},
+    "decision": {"outcome": "APPROVED", "decided_at": "2025-03-17", "applied_policies": []},
+    "similar_to": [{"id": "LOAN-1001", "score": 0.87}]
+  },
+  {
+    "id": "LOAN-1020",
+    "applicant": {"id": "APP-1020", "name": "Daniel Park", "age": 45},
+    "features": {"fico": 702, "dti": 0.33, "income_annual": 88000, "loan_amount": 12000, "loan_term_months": 36, "employment_years": 14, "purpose": "personal", "recent_default": false},
+    "decision": {"outcome": "APPROVED", "decided_at": "2025-03-22", "applied_policies": []},
+    "similar_to": [{"id": "LOAN-1003", "score": 0.83}]
+  },
+  {
+    "id": "LOAN-1029",
+    "applicant": {"id": "APP-1029", "name": "Mira Holloway", "age": 28},
+    "features": {"fico": 718, "dti": 0.30, "income_annual": 75000, "loan_amount": 19000, "loan_term_months": 48, "employment_years": 5, "purpose": "auto", "recent_default": false},
+    "decision": {"outcome": "APPROVED", "decided_at": "2025-04-02", "applied_policies": []},
+    "similar_to": [{"id": "LOAN-1001", "score": 0.82}]
+  },
+  {
+    "id": "LOAN-1051",
+    "applicant": {"id": "APP-1051", "name": "Eli Vasquez", "age": 52},
+    "features": {"fico": 781, "dti": 0.18, "income_annual": 165000, "loan_amount": 420000, "loan_term_months": 360, "employment_years": 22, "purpose": "mortgage", "recent_default": false},
+    "decision": {"outcome": "APPROVED", "decided_at": "2025-04-30", "applied_policies": []},
+    "similar_to": [{"id": "LOAN-1080", "score": 0.81}]
+  },
+  {
+    "id": "LOAN-1064",
+    "applicant": {"id": "APP-1064", "name": "Hannah Reyes", "age": 26},
+    "features": {"fico": 540, "dti": 0.38, "income_annual": 52000, "loan_amount": 18000, "loan_term_months": 60, "employment_years": 3, "purpose": "personal", "recent_default": false},
+    "decision": {"outcome": "DENIED", "decided_at": "2025-05-19", "applied_policies": ["POL-FICO-MIN"]},
+    "similar_to": [{"id": "LOAN-0117", "score": 0.78}]
+  },
+  {
+    "id": "LOAN-1075",
+    "applicant": {"id": "APP-1075", "name": "Owen Carter", "age": 24},
+    "features": {"fico": 645, "dti": 0.25, "income_annual": 18000, "loan_amount": 7000, "loan_term_months": 36, "employment_years": 1, "purpose": "personal", "recent_default": false},
+    "decision": {"outcome": "DENIED", "decided_at": "2025-06-02", "applied_policies": ["POL-INCOME-MIN"]},
+    "similar_to": []
+  },
+  {
+    "id": "LOAN-1080",
+    "applicant": {"id": "APP-1080", "name": "Aiko Tanaka", "age": 48},
+    "features": {"fico": 768, "dti": 0.21, "income_annual": 140000, "loan_amount": 350000, "loan_term_months": 360, "employment_years": 18, "purpose": "mortgage", "recent_default": false},
+    "decision": {"outcome": "APPROVED", "decided_at": "2025-06-10", "applied_policies": []},
+    "similar_to": [{"id": "LOAN-1051", "score": 0.81}]
+  },
+  {
+    "id": "LOAN-1098",
+    "applicant": {"id": "APP-1098", "name": "Liam O'Connor", "age": 36},
+    "features": {"fico": 702, "dti": 0.39, "income_annual": 95000, "loan_amount": 280000, "loan_term_months": 360, "employment_years": 9, "purpose": "mortgage", "recent_default": false},
+    "decision": {"outcome": "DENIED", "decided_at": "2025-06-21", "applied_policies": ["POL-MORTGAGE-DTI-MAX"]},
+    "similar_to": []
+  },
+  {
+    "id": "LOAN-1110",
+    "applicant": {"id": "APP-1110", "name": "Zoe Bergeron", "age": 30},
+    "features": {"fico": 690, "dti": 0.31, "income_annual": 68000, "loan_amount": 14000, "loan_term_months": 48, "employment_years": 6, "purpose": "auto", "recent_default": false},
+    "decision": {"outcome": "APPROVED", "decided_at": "2025-07-04", "applied_policies": []},
+    "similar_to": [{"id": "LOAN-1015", "score": 0.79}]
+  },
+  {
+    "id": "LOAN-1124",
+    "applicant": {"id": "APP-1124", "name": "Noah Brennan", "age": 22},
+    "features": {"fico": 671, "dti": 0.27, "income_annual": 36000, "loan_amount": 5000, "loan_term_months": 24, "employment_years": 0.5, "purpose": "personal", "recent_default": false},
+    "decision": {"outcome": "DENIED", "decided_at": "2025-07-08", "applied_policies": ["POL-EMP-MIN"]},
+    "similar_to": []
+  },
+  {
+    "id": "LOAN-1131",
+    "applicant": {"id": "APP-1131", "name": "Aria Saito", "age": 44},
+    "features": {"fico": 712, "dti": 0.34, "income_annual": 102000, "loan_amount": 30000, "loan_term_months": 60, "employment_years": 11, "purpose": "personal", "recent_default": false},
+    "decision": {"outcome": "APPROVED", "decided_at": "2025-07-15", "applied_policies": []},
+    "similar_to": [{"id": "LOAN-1020", "score": 0.76}]
+  },
+  {
+    "id": "LOAN-1147",
+    "applicant": {"id": "APP-1147", "name": "Felix Adeyemi", "age": 38},
+    "features": {"fico": 575, "dti": 0.41, "income_annual": 58000, "loan_amount": 16000, "loan_term_months": 48, "employment_years": 6, "purpose": "personal", "recent_default": true},
+    "decision": {"outcome": "DENIED", "decided_at": "2025-07-23", "applied_policies": ["POL-FICO-MIN", "POL-RECENT-DEFAULT"]},
+    "similar_to": [{"id": "LOAN-0117", "score": 0.81}, {"id": "LOAN-1064", "score": 0.79}]
+  },
+  {
+    "id": "LOAN-1160",
+    "applicant": {"id": "APP-1160", "name": "Grace Lindqvist", "age": 33},
+    "features": {"fico": 722, "dti": 0.29, "income_annual": 84000, "loan_amount": 24000, "loan_term_months": 60, "employment_years": 7, "purpose": "auto", "recent_default": false},
+    "decision": {"outcome": "APPROVED", "decided_at": "2025-08-01", "applied_policies": []},
+    "similar_to": [{"id": "LOAN-1001", "score": 0.85}]
+  },
+  {
+    "id": "LOAN-1175",
+    "applicant": {"id": "APP-1175", "name": "Kai Westbrook", "age": 27},
+    "features": {"fico": 562, "dti": 0.33, "income_annual": 51000, "loan_amount": 11000, "loan_term_months": 36, "employment_years": 4, "purpose": "auto", "recent_default": false},
+    "decision": {"outcome": "APPROVED", "decided_at": "2025-08-09", "applied_policies": []},
+    "similar_to": []
+  },
+  {
+    "id": "LOAN-1188",
+    "applicant": {"id": "APP-1188", "name": "Ines Marchetti", "age": 49},
+    "features": {"fico": 730, "dti": 0.26, "income_annual": 121000, "loan_amount": 125000, "loan_term_months": 84, "employment_years": 19, "purpose": "personal", "recent_default": false},
+    "decision": {"outcome": "DENIED", "decided_at": "2025-08-12", "applied_policies": ["POL-AMOUNT-CAP"]},
+    "similar_to": []
+  },
+  {
+    "id": "LOAN-1199",
+    "applicant": {"id": "APP-1199", "name": "Theo Asante", "age": 35},
+    "features": {"fico": 555, "dti": 0.30, "income_annual": 49000, "loan_amount": 9000, "loan_term_months": 36, "employment_years": 5, "purpose": "auto", "recent_default": false},
+    "decision": {"outcome": "DENIED", "decided_at": "2025-08-18", "applied_policies": ["POL-AUTO-FICO-MIN"]},
+    "similar_to": []
+  },
+  {
+    "id": "LOAN-1210",
+    "applicant": {"id": "APP-1210", "name": "Vera Solberg", "age": 41},
+    "features": {"fico": 698, "dti": 0.32, "income_annual": 88000, "loan_amount": 26000, "loan_term_months": 60, "employment_years": 10, "purpose": "auto", "recent_default": false},
+    "decision": {"outcome": "APPROVED", "decided_at": "2025-08-25", "applied_policies": []},
+    "similar_to": [{"id": "LOAN-1015", "score": 0.81}, {"id": "LOAN-1029", "score": 0.78}]
+  },
+  {
+    "id": "LOAN-1225",
+    "applicant": {"id": "APP-1225", "name": "Malik Brooks", "age": 30},
+    "features": {"fico": 610, "dti": 0.46, "income_annual": 43000, "loan_amount": 17000, "loan_term_months": 48, "employment_years": 3, "purpose": "personal", "recent_default": false},
+    "decision": {"outcome": "DENIED", "decided_at": "2025-09-02", "applied_policies": ["POL-DTI-MAX", "POL-FICO-MIN"]},
+    "similar_to": [{"id": "LOAN-0117", "score": 0.83}, {"id": "LOAN-1042", "score": 0.80}]
+  },
+  {
+    "id": "LOAN-1240",
+    "applicant": {"id": "APP-1240", "name": "Sofia Pereira", "age": 36},
+    "features": {"fico": 735, "dti": 0.28, "income_annual": 96000, "loan_amount": 250000, "loan_term_months": 360, "employment_years": 8, "purpose": "mortgage", "recent_default": false},
+    "decision": {"outcome": "APPROVED", "decided_at": "2025-09-08", "applied_policies": []},
+    "similar_to": [{"id": "LOAN-1051", "score": 0.78}]
+  }
+]

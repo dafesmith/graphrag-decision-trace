@@ -1,0 +1,18 @@
+services:
+  neo4j:
+    image: neo4j:5.20-community
+    container_name: graphrag-neo4j
+    ports:
+      - "7474:7474"   # Browser UI
+      - "7687:7687"   # Bolt
+    environment:
+      NEO4J_AUTH: neo4j/graphrag-demo
+      NEO4J_PLUGINS: '["apoc"]'
+      NEO4J_dbms_security_procedures_unrestricted: apoc.*
+    volumes:
+      - ./neo4j-data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "wget -O /dev/null -q http://localhost:7474 || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
