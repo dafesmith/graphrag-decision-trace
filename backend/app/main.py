@@ -5,6 +5,7 @@ Provides REST API endpoints for the frontend and agent interactions.
 
 import json
 import logging
+import os
 import traceback
 import uuid
 from contextlib import asynccontextmanager
@@ -73,15 +74,22 @@ app = FastAPI(
 )
 
 # CORS middleware for frontend
+_default_cors_origins = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://localhost:3001",
+    "http://127.0.0.1:3001",
+]
+_cors_env = os.getenv("CORS_ALLOW_ORIGINS", "")
+_cors_origins = (
+    [o.strip() for o in _cors_env.split(",") if o.strip()]
+    if _cors_env
+    else _default_cors_origins
+)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
-        "http://localhost:3001",
-        "http://127.0.0.1:3001",
-        "https://context-graph-demo.vercel.app",
-    ],
+    allow_origins=_cors_origins,
+    allow_origin_regex=os.getenv("CORS_ALLOW_ORIGIN_REGEX") or None,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
